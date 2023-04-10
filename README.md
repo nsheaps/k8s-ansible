@@ -101,3 +101,8 @@ If you encounter any issues during the installation or configuration process, pl
 ## Scratch/Notes
 https://devopscube.com/setup-kubernetes-cluster-kubeadm/
 
+### TODO
+* [ ] how to run needs updating
+* [ ] worker role
+* [ ] networking role
+* [ ] master role

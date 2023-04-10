@@ -1,0 +1,77 @@
+---
+- name: Update package cache
+  apt:
+    update_cache: yes
+
+- name: Install base packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ base_packages }}"
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: yes
+
+# Container runtime setup
+- name: Add cri-o GPG key
+  apt_key:
+    url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key
+    state: present
+  tags:
+    - cri-o
+
+- name: Add cri-o APT repository
+  apt_repository:
+    repo: deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /
+    state: present
+  tags:
+    - cri-o
+
+- name: Install cri-o packages
+  apt:
+    name:
+    - cri-o
+    - cri-o-runc
+    - cri-o-umoci
+    state: present
+  tags:
+    - cri-o
+
+# Kubernetes setup
+- name: Add Kubernetes apt-key
+  become: true
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  tags:
+    - kubernetes
+
+- name: Add Kubernetes apt repository
+  become: true
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+  tags:
+    - kubernetes
+
+- name: Install Kubernetes packages
+  become: true
+  apt:
+    name:
+      - kubelet={{ kubernetes_version }}-00
+      - kubeadm={{ kubernetes_version }}-00
+      - kubectl={{ kubernetes_version }}-00
+    state: present
+    update_cache: yes
+  tags:
+    - kubernetes
+
+- name: Enable and start kubelet service
+  become: true
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+  tags:
+    - kubernetes

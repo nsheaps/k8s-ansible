@@ -96,3 +96,8 @@ Note: WSL2 requires hardware virtualization technologies and is not suitable for
 ## Troubleshooting
 
 If you encounter any issues during the installation or configuration process, please check the logs in `/var/log/kubernetes/` on your master node(s).
+
+
+## Scratch/Notes
+https://devopscube.com/setup-kubernetes-cluster-kubeadm/
+

@@ -1,0 +1,15 @@
+---
+base_packages:
+  - curl
+  - git
+  - vim
+  - wget
+  - unzip
+  - ca-certificates
+  - apt-transport-https
+  - gnupg2
+  - software-properties-common
+
+  
+# Kubernetes version
+kubernetes_version: '1.26.3'
